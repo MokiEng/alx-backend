@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Deletion-resilient hypermedia pagination
-"""
+"""Task 3's module."""
 import csv
 from typing import Dict, List
 
 
 class Server:
-    """Server class to paginate a database of popular baby names.
+    """
+    Server class to paginate a database of popular baby names.
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
@@ -17,8 +17,7 @@ class Server:
         self.__indexed_dataset = None
 
     def dataset(self) -> List[List]:
-        """Cached dataset
-        """
+        """Cached dataset."""
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
@@ -28,7 +27,8 @@ class Server:
         return self.__dataset
 
     def indexed_dataset(self) -> Dict[int, List]:
-        """Dataset indexed by sorting position, starting at 0
+        """
+        Dataset indexed by sorting position, starting at 0
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
@@ -39,27 +39,23 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """Retrieves info about a page from a given index and with a
-        specified size.
         """
-        data = self.indexed_dataset()
-        assert index is not None and index >= 0 and index <= max(data.keys())
-        page_data = []
-        data_count = 0
-        next_index = None
-        start = index if index else 0
-        for i, item in data.items():
-            if i >= start and data_count < page_size:
-                page_data.append(item)
-                data_count += 1
-                continue
-            if data_count == page_size:
-                next_index = i
-                break
-        page_info = {
-            'index': index,
-            'next_index': next_index,
-            'page_size': len(page_data),
-            'data': page_data,
+        Get a dictionary containing hypermedia pagination information.
+        """
+        assert index is None or (isinstance(index, int) and 0 <= index < len(self.indexed_dataset())),
+        assert isinstance(page_size, int) and page_size > 0,
+
+        if index is None:
+            index = 0
+
+        next_index = index + page_size
+        data = [self.indexed_dataset().get(i) for i in range(index, min(next_index, len(self.indexed_dataset()))]
+
+        hyper_info = {
+            "index": index,
+            "next_index": next_index,
+            "page_size": page_size,
+            "data": data
         }
-        return page_info
+
+        return hyper_info        
