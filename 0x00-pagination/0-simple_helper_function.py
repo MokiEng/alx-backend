@@ -9,8 +9,8 @@ def index_range(page: int, page_size: int) -> tuple:
     and page_size.
     """
     if page <= 1:
-      start = 0
+        start = 0
     else:
-      start = (page - 1) * page_size
+        start = (page - 1) * page_size
     end = start + page_size
     return start, end

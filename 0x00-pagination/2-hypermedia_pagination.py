@@ -5,6 +5,7 @@ import csv
 import math
 from typing import Dict, List, Tuple
 
+
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """Return a tuple of the start and end index for
     a given page and page_size.
