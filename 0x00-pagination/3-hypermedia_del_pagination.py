@@ -47,13 +47,13 @@ class Server:
         data_count = 0
         next_index = None
         start = index if index else 0
-        for i, item in data.items():
-            if i >= start and data_count < page_size:
+        for j, item in data.items():
+            if j >= start and data_count < page_size:
                 page_data.append(item)
                 data_count += 1
                 continue
             if data_count == page_size:
-                next_index = i
+                next_index = j
                 break
         page_info = {
             'index': index,
