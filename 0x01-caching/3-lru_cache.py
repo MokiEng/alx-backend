@@ -13,23 +13,24 @@ class LRUCache(BaseCaching):
     def __init__(self):
         """Initializes the cache."""
         super().__init__()
-        self.cache_data = OrderedDict()
+        self.order = []
 
     def put(self, key, item):
         """Adds an item in the cache."""
-        if key is None or item is None:
-            return
-        if key not in self.cache_data:
-            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                lru_key, _ = self.cache_data.popitem(True)
+        if key is not None and item is not None:
+            if key in self.cache_data:
+                self.order.remove(key)
+            elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                lru_key = self.order.pop(0)
                 print("DISCARD:", lru_key)
-            self.cache_data[key] = item
-            self.cache_data.move_to_end(key, last=False)
-        else:
+                del self.cache_data[lru_key]
+            self.order.append(key)
             self.cache_data[key] = item
 
     def get(self, key):
         """Get an item by key."""
-        if key is not None and key in self.cache_data:
-            self.cache_data.move_to_end(key, last=False)
-        return self.cache_data.get(key, None)
+        if key is not None:
+            if key in self.cache_data:
+                self.order.remove(key)
+                self.order.append(key)
+                return self.cache_data.get(key)
