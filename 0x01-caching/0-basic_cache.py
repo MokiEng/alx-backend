@@ -9,10 +9,10 @@ class BasicCache(BaseCaching):
     """
     def put(self, key, item):
         """Adds an item in the cache."""
-        if key is None or item is None:
-            return
-        self.cache_data[key] = item
+        if key is not None and item is not None:
+            self.cache_data[key] = item
 
     def get(self, key):
         """Get an item by key."""
-        return self.cache_data.get(key, None)
+        if key is not None:
+            return self.cache_data.get(key)
