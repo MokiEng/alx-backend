@@ -7,7 +7,7 @@ from base_caching import BaseCaching
 
 class MRUCache(BaseCaching):
     """MRUCache defines a caching system using the MRU algorithm.
-    It has a limit of `BaseCaching.MAX_ITEMS` 
+    It has a limit of `BaseCaching.MAX_ITEMS
     on the number of items it can store.
     """
     def __init__(self):
